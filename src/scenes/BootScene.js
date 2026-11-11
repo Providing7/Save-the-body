@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { GAME_HEIGHT, GAME_WIDTH } from '../config/constants.js';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -17,14 +18,14 @@ export class BootScene extends Phaser.Scene {
     const g = this.make.graphics({ add: false });
 
     g.fillGradientStyle(0x6b1218, 0x6b1218, 0x2b0507, 0x2b0507, 1);
-    g.fillRect(0, 0, 800, 450);
+    g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
     g.fillStyle(0xffffff, 0.04);
-    for (let y = 20; y < 450; y += 40) {
-      g.fillRect(0, y, 800, 8);
+    for (let y = 20; y < GAME_HEIGHT; y += 40) {
+      g.fillRect(0, y, GAME_WIDTH, 8);
     }
 
-    g.generateTexture('vessel_wall', 800, 450);
+    g.generateTexture('vessel_wall', GAME_WIDTH, GAME_HEIGHT);
     g.destroy();
   }
 

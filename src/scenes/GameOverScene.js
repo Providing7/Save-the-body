@@ -1,4 +1,10 @@
 import Phaser from 'phaser';
+import { GAME_OVER_TIPS, GAME_HEIGHT, GAME_WIDTH } from '../config/constants.js';
+
+const TITLE_BY_CAUSE = {
+  hypoxia: 'Hipóxia tecidual',
+  obstruction: 'Obstrução vascular',
+};
 
 export class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -7,30 +13,42 @@ export class GameOverScene extends Phaser.Scene {
 
   init(data) {
     this.distance = data?.distance ?? 0;
+    this.score = data?.score ?? 0;
+    this.cause = data?.cause ?? 'hypoxia';
     this.restarting = false;
   }
 
   create() {
-    const centerX = this.scale.width / 2;
+    const centerX = GAME_WIDTH / 2;
 
     this.add
-      .text(centerX, 180, 'Fim de jogo', {
+      .text(centerX, 90, TITLE_BY_CAUSE[this.cause], {
         fontFamily: 'monospace',
-        fontSize: '40px',
+        fontSize: '36px',
         color: '#f2c7c7',
       })
       .setOrigin(0.5);
 
     this.add
-      .text(centerX, 240, `Distância: ${this.distance} m`, {
+      .text(centerX, 150, `${this.distance} m · ${this.score} pts`, {
         fontFamily: 'monospace',
-        fontSize: '18px',
+        fontSize: '20px',
         color: '#d9a5a5',
       })
       .setOrigin(0.5);
 
     this.add
-      .text(centerX, 320, 'ESPAÇO ou toque para reiniciar', {
+      .text(centerX, 230, GAME_OVER_TIPS[this.cause], {
+        fontFamily: 'monospace',
+        fontSize: '15px',
+        color: '#fff2cc',
+        align: 'center',
+        wordWrap: { width: 560 },
+      })
+      .setOrigin(0.5);
+
+    this.add
+      .text(centerX, GAME_HEIGHT - 80, 'ESPAÇO ou toque para reiniciar', {
         fontFamily: 'monospace',
         fontSize: '16px',
         color: '#f2c7c7',

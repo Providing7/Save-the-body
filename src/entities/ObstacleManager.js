@@ -48,8 +48,8 @@ export class ObstacleManager {
             return 'clot';
         }
 
-        if (roll < OBSTACLE_SPAWN.CLOT_CHANCE + OBSTACLE_SPAWN.LEUCOCYTE_CHANCE) {
-            return 'leucocyte';
+        if (roll < OBSTACLE_SPAWN.CLOT_CHANCE + OBSTACLE_SPAWN.PATHOGEN_CHANCE) {
+            return 'pathogen';
         }
 
         return 'atheroma';

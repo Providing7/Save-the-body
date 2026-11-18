@@ -53,13 +53,13 @@ export const ITEM_SPAWN = {
 
 export const OBSTACLE_SPAWN = {
   CLOT_CHANCE: 0.3,
-  LEUCOCYTE_CHANCE: 0.25,
+  PATHOGEN_CHANCE: 0.25,
 };
 
 export const OBSTACLES = {
-  atheroma: { key: 'atheroma', y: 390, damage: 1 },
-  clot: { key: 'clot', y: 380, damage: 2},
-  leucocyte: { key: 'leucocyte', y: 360, damage: 1 },
+  atheroma: { key: 'atheroma', y: 392, damage: 1 },
+  clot: { key: 'clot', y: 380, damage: 2 },
+  pathogen: { key: 'pathogen', y: 348, damage: 1 },
 };
 
 export const HIT_INVULNERABILITY_MS = 800;
@@ -68,8 +68,8 @@ export const COLLISION_MESSAGES = {
   atheroma:
     'Ateroma detectado: a placa aumenta a resistência vascular e reduz o fluxo.',
   clot: 'Trombo! A obstrução eleva a pressão a montante e reduz a perfusão.',
-  leucocyte:
-    'Leucócito em excesso: a resposta inflamatória pode lesar o endotélio.',
+  pathogen:
+    'Patógeno em excesso: a resposta inflamatória pode lesar o endotélio.',
 };
 
 export const GAME_OVER_TIPS = {

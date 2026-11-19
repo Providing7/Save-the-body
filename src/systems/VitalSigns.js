@@ -11,9 +11,10 @@ export class VitalSigns {
 
   update(delta, speed, isBoosting) {
     const seconds = delta / 1000;
+    const meters = (speed * seconds) / PIXEL_PER_METER;
 
-    this.oxygen = Math.max(0, this.oxygen - OXYGEN.DRAIN_PER_SECOND * seconds);
-    this.distance += (speed * seconds) / PIXEL_PER_METER;
+    this.oxygen = Math.max(0, this.oxygen - OXYGEN.DRAIN_PER_METER * meters);
+    this.distance += meters;
     this.bpm = isBoosting ? BPM.EXERCISE : BPM.REST;
   }
 

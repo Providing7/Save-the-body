@@ -6,15 +6,19 @@ export class BootScene extends Phaser.Scene {
     super({ key: 'BootScene' });
   }
 
+  preload() {
+    this.load.image('erythrocyte', '/assets/erythrocyte.png');
+    this.load.image('oxygen', '/assets/oxygen.png');
+    this.load.image('glucose', '/assets/glucose.png');
+    this.load.image('atheroma', '/assets/atheroma.png');
+    this.load.image('clot', '/assets/clot.png');
+    this.load.image('pathogen', '/assets/pathogen.png');
+    this.load.image('leucocyte', '/assets/leucocyte.png');
+  }
+
   create() {
     this.createVesselWallTexture();
     this.createEndotheliumTexture();
-    this.createErythrocyteTexture();
-    this.createOxygenTexture();
-    this.createGlucoseTexture();
-    this.createAtheromaTexture();
-    this.createClotTexture();
-    this.createLeucocyteTexture();
 
     this.scene.start('GameScene');
   }

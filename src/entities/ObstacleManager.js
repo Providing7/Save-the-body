@@ -1,5 +1,11 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, OBSTACLES, OBSTACLE_SPAWN, SPAWN } from '../config/constants.js';
+import {
+    GAME_WIDTH,
+    OBSTACLES,
+    OBSTACLE_BODY,
+    OBSTACLE_SPAWN,
+    SPAWN,
+} from '../config/constants.js';
 
 export class ObstacleManager {
     constructor(scene) {
@@ -39,6 +45,10 @@ export class ObstacleManager {
         const obstacle = this.group.create(GAME_WIDTH + 60, spec.y, spec.key);
         obstacle.setData('kind', kind);
         obstacle.setDepth(5);
+        obstacle.body.setSize(
+            obstacle.width * OBSTACLE_BODY.WIDTH_FACTOR,
+            obstacle.height,
+        );
     }
 
     pickKind() {
@@ -48,8 +58,8 @@ export class ObstacleManager {
             return 'clot';
         }
 
-        if (roll < OBSTACLE_SPAWN.CLOT_CHANCE + OBSTACLE_SPAWN.LEUCOCYTE_CHANCE) {
-            return 'leucocyte';
+        if (roll < OBSTACLE_SPAWN.CLOT_CHANCE + OBSTACLE_SPAWN.PATHOGEN_CHANCE) {
+            return 'pathogen';
         }
 
         return 'atheroma';

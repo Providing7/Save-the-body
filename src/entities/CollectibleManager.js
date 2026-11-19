@@ -4,7 +4,7 @@ import { GAME_WIDTH, ITEM_SPAWN, SPAWN } from '../config/constants.js';
 export class CollectibleManager {
     constructor(scene) {
         this.scene = scene;
-        this.group = scene.physics.add.group({ allowGravity: false});
+        this.group = scene.physics.add.group({ allowGravity: false });
         this.elapsed = 0;
         this.nextSpawn = SPAWN.COLLECTIBLE_START_MS;
     }

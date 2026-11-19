@@ -11,13 +11,13 @@ import {
   OXYGEN,
   PLAYER,
   SCORE,
-  SCROLL_SPEED,
 } from '../config/constants.js';
 import { CollectibleManager } from '../entities/CollectibleManager.js';
 import { ObstacleManager } from '../entities/ObstacleManager.js';
 import { Player } from '../entities/Player.js';
 import { VitalSigns } from '../systems/VitalSigns.js';
 import { InputController } from '../systems/InputController.js';
+import { speedFor } from '../systems/SpeedRamp.js';
 import { HUD } from '../ui/HUD.js';
 import { MessageBanner } from '../ui/MessageBanner.js';
 
@@ -67,7 +67,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   get currentSpeed() {
-    return SCROLL_SPEED * (this.isBoosting ? GLUCOSE_BOOST.SPEED_FACTOR : 1);
+    const base = speedFor(this.vitals.distance);
+
+    return base * (this.isBoosting ? GLUCOSE_BOOST.SPEED_FACTOR : 1);
   }
 
   createBackground() {

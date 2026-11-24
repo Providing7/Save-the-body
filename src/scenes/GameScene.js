@@ -18,6 +18,7 @@ import { Player } from '../entities/Player.js';
 import { VitalSigns } from '../systems/VitalSigns.js';
 import { InputController } from '../systems/InputController.js';
 import { speedFor } from '../systems/SpeedRamp.js';
+import { PhysioState } from '../systems/PhysioState.js';
 import { HUD } from '../ui/HUD.js';
 import { MessageBanner } from '../ui/MessageBanner.js';
 
@@ -31,6 +32,7 @@ export class GameScene extends Phaser.Scene {
     this.boostUntil = 0;
     this.invulnerableUntil = 0;
     this.vitals = new VitalSigns();
+    this.physio = new PhysioState();
 
     this.createBackground();
     this.createGround();
@@ -68,8 +70,9 @@ export class GameScene extends Phaser.Scene {
 
   get currentSpeed() {
     const base = speedFor(this.vitals.distance);
+    const boost = this.isBoosting ? GLUCOSE_BOOST.SPEED_FACTOR : 1;
 
-    return base * (this.isBoosting ? GLUCOSE_BOOST.SPEED_FACTOR : 1);
+    return base * this.physio.speedFactor * boost;
   }
 
   createBackground() {
@@ -105,10 +108,12 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(_time, delta) {
+    this.physio.update(delta);
+
     const speed = this.currentSpeed;
 
     this.scroll(delta, speed);
-    this.vitals.update(delta, speed, this.isBoosting);
+    this.vitals.update(delta, speed, this.physio, this.isBoosting);
 
     this.collectibles.update(delta, speed, this.vitals.distance);
     this.obstacles.update(delta, speed, this.vitals.distance);

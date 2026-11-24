@@ -28,7 +28,20 @@ export const OXYGEN = {
 
 export const BPM = {
   REST: 75,
-  EXERCISE: 110,
+  EXERCISE: 140,
+  BOOST_BONUS: 20,
+};
+
+export const PHYSIO = {
+  REST_MS: 10000,
+  EXERCISE_MS: 15000,
+  BPM_RAMP_MS: 3000,
+  SPEED_FACTOR: 1.15,
+  OXYGEN_FACTOR: 1.3,
+  LABELS: {
+    REST: 'repouso',
+    EXERCISE: 'exercício',
+  },
 };
 
 export const DAMAGE = {

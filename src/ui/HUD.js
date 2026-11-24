@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, OXYGEN } from '../config/constants.js';
+import { GAME_WIDTH, OXYGEN, PHYSIO } from '../config/constants.js';
 
 const TEXT_STYLE = {
     fontFamily: 'monospace',
@@ -27,7 +27,7 @@ export class HUD {
            .rectangle(16, 66, BAR_WIDTH, 14, 0xd94f4f)
            .setOrigin(0, 0.5)
            .setDepth(10);
-        
+
         this.scoreText = scene.add
            .text(GAME_WIDTH - 16, 12, '',TEXT_STYLE)
            .setOrigin(1, 0)
@@ -41,8 +41,9 @@ export class HUD {
 
     update(vitals) {
         const oxygenRatio = Phaser.Math.Clamp(vitals.oxygen / OXYGEN.MAX, 0, 1);
+        const state = vitals.isExercising ? PHYSIO.LABELS.EXERCISE : PHYSIO.LABELS.REST;
 
-        this.bpmText.setText(`${vitals.bpm} bpm`);
+        this.bpmText.setText(`${Math.round(vitals.bpm)} bpm · ${state}`);
         this.oxygenLabel.setText(`Saturação ${Math.round(vitals.oxygen)}%`);
         this.barFill.setScale(oxygenRatio, 1);
         this.barFill.setFillStyle(oxygenRatio < 0.25 ? 0xff4d4d : 0xd94f4f);

@@ -30,7 +30,7 @@ export class ObstacleManager {
 
     intervalFor(distance) {
         const progress = Phaser.Math.Clamp(distance / SPAWN.RAMP_DISTANCE, 0, 1);
-        
+
         return Phaser.Math.Linear(
             SPAWN.OBSTACLE_START_MS,
             SPAWN.OBSTACLE_MIN_MS,

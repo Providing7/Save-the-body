@@ -13,14 +13,13 @@ export class BootScene extends Phaser.Scene {
     this.load.image('atheroma', '/assets/atheroma.png');
     this.load.image('clot', '/assets/clot.png');
     this.load.image('pathogen', '/assets/pathogen.png');
-    this.load.image('leucocyte', '/assets/leucocyte.png');
   }
 
   create() {
     this.createVesselWallTexture();
     this.createEndotheliumTexture();
 
-    this.scene.start('GameScene');
+    this.scene.start('MenuScene');
   }
 
   createVesselWallTexture() {
@@ -142,20 +141,6 @@ export class BootScene extends Phaser.Scene {
     g.strokeCircle(24, 30, 17);
 
     g.generateTexture('clot', 48, 60);
-    g.destroy();
-  }
-
-  createLeucocyteTexture() {
-    const g = this.make.graphics({ add: false });
-
-    g.fillStyle(0xe6d9f2, 1);
-    g.fillCircle(22, 20, 18);
-    g.fillStyle(0x8e6bb5, 1);
-    g.fillCircle(22, 20, 9);
-    g.lineStyle(2, 0xb9a3d6, 1);
-    g.strokeCircle(22, 20, 18);
-
-    g.generateTexture('leucocyte', 44, 40);
     g.destroy();
   }
 }

@@ -9,8 +9,10 @@ import {
   HIT_INVULNERABILITY_MS,
   OBSTACLES,
   OXYGEN,
+  PARALLAX,
   PLAYER,
   SCORE,
+  VIGNETTE,
 } from '../config/constants.js';
 import { CollectibleManager } from '../entities/CollectibleManager.js';
 import { ObstacleManager } from '../entities/ObstacleManager.js';
@@ -76,13 +78,15 @@ export class GameScene extends Phaser.Scene {
   }
 
   createBackground() {
-    this.vesselBackground = this.add.tileSprite(
-      GAME_WIDTH / 2,
-      GAME_HEIGHT / 2,
-      GAME_WIDTH,
-      GAME_HEIGHT,
-      'vessel_wall',
-    );
+    this.vesselBackground = this.add
+      .tileSprite(
+        GAME_WIDTH / 2,
+        GAME_HEIGHT / 2,
+        GAME_WIDTH,
+        GAME_HEIGHT,
+        'background_far',
+      )
+      .setDepth(0);
 
     this.floor = this.add.tileSprite(
       GAME_WIDTH / 2,
@@ -91,6 +95,11 @@ export class GameScene extends Phaser.Scene {
       GROUND_HEIGHT,
       'endothelium',
     );
+
+    this.add
+      .image(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'vignette')
+      .setDisplaySize(GAME_WIDTH, GAME_HEIGHT)
+      .setDepth(VIGNETTE.DEPTH);
   }
 
   createGround() {
@@ -133,7 +142,7 @@ export class GameScene extends Phaser.Scene {
   scroll(delta, speed) {
     const dx = (speed * delta) / 1000;
 
-    this.vesselBackground.tilePositionX += dx;
+    this.vesselBackground.tilePositionX += dx * PARALLAX.FAR;
     this.floor.tilePositionX += dx;
   }
 

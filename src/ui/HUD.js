@@ -42,14 +42,14 @@ export class HUD {
         for (let index = 0; index < DAMAGE.MAX; index += 1) {
             this.integrityBlocks.push(
                 scene.add
-                   .rectangle(
-                        16 + index * (INTEGRITY.BLOCK_SIZE + INTEGRITY.BLOCK_GAP),
+                   .image(
+                        16 + index * (INTEGRITY.ICON_SIZE + INTEGRITY.ICON_GAP),
                         108,
-                        INTEGRITY.BLOCK_SIZE,
-                        INTEGRITY.BLOCK_SIZE,
-                        INTEGRITY.ACTIVE_COLOR,
+                        'heart',
                     )
                    .setOrigin(0, 0.5)
+                   .setDisplaySize(INTEGRITY.ICON_SIZE, INTEGRITY.ICON_SIZE)
+                   .setTint(INTEGRITY.FULL_TINT)
                    .setDepth(10),
             );
         }
@@ -76,8 +76,8 @@ export class HUD {
 
         this.integrityBlocks.forEach((block, index) => {
             const active = index < DAMAGE.MAX - vitals.damage;
-            block.setFillStyle(
-                active ? INTEGRITY.ACTIVE_COLOR : INTEGRITY.LOST_COLOR,
+            block.setTint(
+                active ? INTEGRITY.FULL_TINT : INTEGRITY.LOST_TINT,
             );
         });
 

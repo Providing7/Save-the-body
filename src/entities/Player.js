@@ -30,6 +30,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.isDucking = value;
-        this.setScale(1, value ? PLAYER.DUCK_SCALE_Y : 1);
+        this.setTexture(value ? 'erythrocyte_duck' : 'erythrocyte');
+
+        const bodyHeight = value ? PLAYER.DUCK_BODY_HEIGHT : this.height;
+
+        this.body.setSize(PLAYER.BODY_WIDTH, bodyHeight, false);
+        this.body.setOffset(
+            (this.width - PLAYER.BODY_WIDTH) / 2,
+            this.height - bodyHeight,
+        );
     }
 }

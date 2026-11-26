@@ -1,5 +1,11 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, OXYGEN, PHYSIO } from '../config/constants.js';
+import {
+    DAMAGE,
+    GAME_WIDTH,
+    INTEGRITY,
+    OXYGEN,
+    PHYSIO,
+} from '../config/constants.js';
 
 const TEXT_STYLE = {
     fontFamily: 'monospace',
@@ -28,6 +34,26 @@ export class HUD {
            .setOrigin(0, 0.5)
            .setDepth(10);
 
+        this.integrityLabel = scene.add
+           .text(16, 88, INTEGRITY.LABEL, { ...TEXT_STYLE, fontSize: '12px' })
+           .setDepth(10);
+
+        this.integrityBlocks = [];
+        for (let index = 0; index < DAMAGE.MAX; index += 1) {
+            this.integrityBlocks.push(
+                scene.add
+                   .rectangle(
+                        16 + index * (INTEGRITY.BLOCK_SIZE + INTEGRITY.BLOCK_GAP),
+                        108,
+                        INTEGRITY.BLOCK_SIZE,
+                        INTEGRITY.BLOCK_SIZE,
+                        INTEGRITY.ACTIVE_COLOR,
+                    )
+                   .setOrigin(0, 0.5)
+                   .setDepth(10),
+            );
+        }
+
         this.scoreText = scene.add
            .text(GAME_WIDTH - 16, 12, '',TEXT_STYLE)
            .setOrigin(1, 0)
@@ -47,6 +73,13 @@ export class HUD {
         this.oxygenLabel.setText(`Saturação ${Math.round(vitals.oxygen)}%`);
         this.barFill.setScale(oxygenRatio, 1);
         this.barFill.setFillStyle(oxygenRatio < 0.25 ? 0xff4d4d : 0xd94f4f);
+
+        this.integrityBlocks.forEach((block, index) => {
+            const active = index < DAMAGE.MAX - vitals.damage;
+            block.setFillStyle(
+                active ? INTEGRITY.ACTIVE_COLOR : INTEGRITY.LOST_COLOR,
+            );
+        });
 
         this.scoreText.setText(`${vitals.score} pts`);
         this.distanceText.setText(`${Math.round(vitals.distance)} m`);

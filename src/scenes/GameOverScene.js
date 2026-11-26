@@ -16,6 +16,7 @@ export class GameOverScene extends Phaser.Scene {
     this.score = data?.score ?? 0;
     this.cause = data?.cause ?? 'hypoxia';
     this.restarting = false;
+    this.leaving = false;
   }
 
   create() {
@@ -48,7 +49,7 @@ export class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(centerX, GAME_HEIGHT - 80, 'ESPAÇO ou toque para reiniciar', {
+      .text(centerX, GAME_HEIGHT - 80, 'ESPAÇO ou toque para reiniciar · M para o menu', {
         fontFamily: 'monospace',
         fontSize: '16px',
         color: '#f2c7c7',
@@ -56,12 +57,13 @@ export class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.input.keyboard.on('keydown-SPACE', this.restart, this);
+    this.input.keyboard.on('keydown-M', this.goToMenu, this);
     this.input.on('pointerdown', this.restart, this);
     this.events.once('shutdown', this.cleanup, this);
   }
 
   restart() {
-    if (this.restarting) {
+    if (this.restarting || this.leaving) {
       return;
     }
 
@@ -69,8 +71,18 @@ export class GameOverScene extends Phaser.Scene {
     this.scene.start('GameScene');
   }
 
+  goToMenu() {
+    if (this.restarting || this.leaving) {
+      return;
+    }
+
+    this.leaving = true;
+    this.scene.start('MenuScene');
+  }
+
   cleanup() {
     this.input.keyboard.off('keydown-SPACE', this.restart, this);
+    this.input.keyboard.off('keydown-M', this.goToMenu, this);
     this.input.off('pointerdown', this.restart, this);
   }
 }

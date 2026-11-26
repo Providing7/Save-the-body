@@ -10,8 +10,8 @@ export const PIXEL_PER_METER = 10;
 export const PLAYER = {
   START_X: 120,
   JUMP_VELOCITY: -600,
-  DUCK_SCALE_Y: 0.5,
   BODY_WIDTH: 40,
+  DUCK_BODY_HEIGHT: 24,
 };
 
 export const SPEED = {
@@ -163,8 +163,16 @@ export const TUTORIAL = {
 
 export const INTEGRITY = {
   LABEL: 'Integridade',
-  BLOCK_SIZE: 16,
-  BLOCK_GAP: 6,
-  ACTIVE_COLOR: 0x6fd08c,
-  LOST_COLOR: 0x3a0a0d,
+  ICON_SIZE: 22,
+  ICON_GAP: 6,
+  FULL_TINT: 0xff5d5d,
+  LOST_TINT: 0x5c1414,
+};
+
+export const PARALLAX = {
+  FAR: 0.35,
+};
+
+export const VIGNETTE = {
+  DEPTH: 9,
 };

@@ -43,7 +43,7 @@ export class TutorialScene extends Phaser.Scene {
       GAME_HEIGHT / 2,
       GAME_WIDTH,
       GAME_HEIGHT,
-      'vessel_wall',
+      'background_far',
     );
   }
 

@@ -101,3 +101,70 @@ export const GAME_OVER_TIPS = {
   obstruction:
     'Obstrução vascular: ateromas e trombos aumentam a resistência periférica total.',
 };
+
+export const MENU = {
+  TITLE: 'SUPER CARDIO BROS',
+  SUBTITLE: 'CardioRunner',
+  TAGLINE: 'Oxigênio, glicose e obstáculos dentro da corrente sanguínea',
+  PLAY: 'JOGAR',
+  TUTORIAL: 'COMO JOGAR',
+  CONTROLS: 'Espaço / ↑ pula · ↓ abaixa · clique ou toque também pula',
+  FOOTER: 'Projeto educativo · Fisiologia cardiovascular',
+};
+
+export const TUTORIAL = {
+  TITLE: 'Guia do jogador',
+  HINT_NAV: '← → navegar · ESC volta ao menu',
+  PREV: '← Anterior',
+  NEXT: 'Próximo →',
+  PLAY: 'JOGAR',
+  MENU: 'MENU',
+  PAGES: [
+    {
+      title: 'Como jogar',
+      lines: [
+        'Você é uma hemácia dentro de um vaso sanguíneo.',
+        'Desvie das ameaças e colete oxigênio e glicose.',
+        `Controles: ${MENU.CONTROLS}.`,
+        'Sua vida tem duas regras independentes:',
+        '• Saturação de O₂ em 0 → hipóxia tecidual.',
+        `• Acumular ${DAMAGE.MAX} pontos de dano → obstrução vascular.`,
+      ],
+    },
+    {
+      title: 'Você e os itens',
+      sprites: ['erythrocyte', 'oxygen', 'glucose'],
+      lines: [
+        'Hemácia - você. Pule e abaixe para passar pelos vãos.',
+        `Oxigênio - +${OXYGEN.PICKUP_VALUE} de saturação e ${SCORE.OXYGEN} pts.`,
+        `Glicose - +${SCORE.GLUCOSE} pts e boost de ${GLUCOSE_BOOST.DURATION_MS / 1000}s.`,
+      ],
+    },
+    {
+      title: 'Ameaças',
+      sprites: ['atheroma', 'clot', 'pathogen'],
+      lines: [
+        `Ateroma — ${OBSTACLES.atheroma.damage} dano. A placa aumenta a resistência vascular e reduz o fluxo.`,
+        `Coágulo — ${OBSTACLES.clot.damage} danos. A obstrução eleva a pressão a montante e reduz a perfusão.`,
+        `Patógeno — ${OBSTACLES.pathogen.damage} dano. A resposta inflamatória pode lesar o endotélio.`,
+        `Após um impacto, você fica invulnerável por ${HIT_INVULNERABILITY_MS} ms.`,
+      ],
+    },
+    {
+      title: 'Repouso e exercício',
+      lines: [
+        `${PHYSIO.REST_MS / 1000}s de repouso alternam com ${PHYSIO.EXERCISE_MS / 1000}s de exercício.`,
+        `Em exercício: BPM ${BPM.REST} → ${BPM.EXERCISE}, velocidade ×${PHYSIO.SPEED_FACTOR}.`,
+        `O₂ por metro ×${PHYSIO.OXYGEN_FACTOR}: o esforço cobra mais saturação.`,
+      ],
+    },
+  ],
+};
+
+export const INTEGRITY = {
+  LABEL: 'Integridade',
+  BLOCK_SIZE: 16,
+  BLOCK_GAP: 6,
+  ACTIVE_COLOR: 0x6fd08c,
+  LOST_COLOR: 0x3a0a0d,
+};

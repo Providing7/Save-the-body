@@ -46,6 +46,7 @@ export const PHYSIO = {
 
 export const DAMAGE = {
   MAX: 3,
+  VIBRATE_MS: 40,
 };
 
 export const SCORE = {
@@ -109,6 +110,7 @@ export const MENU = {
   PLAY: 'JOGAR',
   TUTORIAL: 'COMO JOGAR',
   CONTROLS: 'Espaço / ↑ pula · ↓ abaixa · clique ou toque também pula',
+  CONTROLS_TOUCH: 'Segure a metade esquerda para abaixar · toque na direita para pular',
   FOOTER: 'Projeto educativo · Fisiologia cardiovascular',
 };
 
@@ -175,4 +177,19 @@ export const PARALLAX = {
 
 export const VIGNETTE = {
   DEPTH: 9,
+};
+
+export const TOUCH = {
+  HINT_MS: 4000,
+  HINT_DEPTH: 12,
+};
+
+export const GAME_OVER = {
+  RESTART: 'JOGAR NOVAMENTE',
+  MENU: 'MENU',
+  BUTTON_WIDTH: 210,
+  BUTTON_HEIGHT: 48,
+  BUTTON_GAP: 24,
+  BUTTON_Y: 320,
+  INPUT_GUARD_MS: 300,
 };

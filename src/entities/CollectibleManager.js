@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, ITEM_SPAWN, SPAWN } from '../config/constants.js';
+import { ITEM_SPAWN, SPAWN } from '../config/constants.js';
 
 export class CollectibleManager {
     constructor(scene) {
@@ -37,7 +37,7 @@ export class CollectibleManager {
         const type = isOxygen ? 'oxygen' : 'glucose';
         const y = Phaser.Math.Between(320, 385);
 
-        const item = this.group.create(GAME_WIDTH + 40, y, type);
+        const item = this.group.create(this.scene.scale.width + 40, y, type);
         item.setData('type', type);
         item.setDepth(6);
     }

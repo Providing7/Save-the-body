@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 import {
   COLLISION_MESSAGES,
-  GAME_HEIGHT,
-  GAME_WIDTH,
+  DAMAGE,
   GLUCOSE_BOOST,
   GROUND_HEIGHT,
   GROUND_TOP,
@@ -23,6 +22,8 @@ import { speedFor } from '../systems/SpeedRamp.js';
 import { PhysioState } from '../systems/PhysioState.js';
 import { HUD } from '../ui/HUD.js';
 import { MessageBanner } from '../ui/MessageBanner.js';
+import { TouchHint } from '../ui/TouchHint.js';
+import { installMobilePause } from '../systems/MobileLayout.js';
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -63,7 +64,14 @@ export class GameScene extends Phaser.Scene {
     this.banner = new MessageBanner(this);
     this.inputs = new InputController(this);
 
+    this.touchHint = new TouchHint(this);
+
+    installMobilePause(this);
+
     this.hud.update(this.vitals);
+
+    this.scale.on('resize', this.onResize, this);
+    this.events.once('shutdown', this.cleanup, this);
   }
 
   get isBoosting() {
@@ -78,37 +86,65 @@ export class GameScene extends Phaser.Scene {
   }
 
   createBackground() {
+    const width = this.scale.width;
+    const height = this.scale.height;
+
     this.vesselBackground = this.add
       .tileSprite(
-        GAME_WIDTH / 2,
-        GAME_HEIGHT / 2,
-        GAME_WIDTH,
-        GAME_HEIGHT,
+        width / 2,
+        height / 2,
+        width,
+        height,
         'background_far',
       )
       .setDepth(0);
 
     this.floor = this.add.tileSprite(
-      GAME_WIDTH / 2,
+      width / 2,
       GROUND_TOP + GROUND_HEIGHT / 2,
-      GAME_WIDTH,
+      width,
       GROUND_HEIGHT,
       'endothelium',
     );
 
-    this.add
-      .image(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'vignette')
-      .setDisplaySize(GAME_WIDTH, GAME_HEIGHT)
+    this.vignette = this.add
+      .image(width / 2, height / 2, 'vignette')
+      .setDisplaySize(width, height)
       .setDepth(VIGNETTE.DEPTH);
   }
 
+  onResize(gameSize) {
+    const { width, height } = gameSize;
+    const groundCenterY = GROUND_TOP + GROUND_HEIGHT / 2;
+
+    this.vesselBackground
+      .setPosition(width / 2, height / 2)
+      .setSize(width, height);
+
+    this.floor
+      .setPosition(width / 2, groundCenterY)
+      .setSize(width, GROUND_HEIGHT);
+    this.vignette
+      .setPosition(width / 2, height / 2)
+      .setDisplaySize(width, height);
+    this.groundBody.setPosition(width / 2, groundCenterY);
+    this.groundBody.setSize(width, GROUND_HEIGHT);
+    this.groundBody.body.updateFromGameObject();
+    this.hud.resize(width);
+    this.banner.resize(width);
+  }
+  cleanup() {
+    this.scale.off('resize', this.onResize, this);
+  }
+
   createGround() {
+    const width = this.scale.width;
     const groundCenterY = GROUND_TOP + GROUND_HEIGHT / 2;
 
     this.groundBody = this.add.rectangle(
-      GAME_WIDTH / 2,
+      width / 2,
       groundCenterY,
-      GAME_WIDTH,
+      width,
       GROUND_HEIGHT,
       0x000000,
       0,
@@ -173,6 +209,10 @@ export class GameScene extends Phaser.Scene {
     this.vitals.applyDamage(spec.damage);
     this.banner.show(COLLISION_MESSAGES[kind]);
     this.flashPlayer();
+
+    if (this.sys.game.device.input.touch && navigator.vibrate) {
+      navigator.vibrate(DAMAGE.VIBRATE_MS);
+    }
 
     obstacle.destroy();
   }

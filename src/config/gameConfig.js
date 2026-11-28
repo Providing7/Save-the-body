@@ -12,6 +12,9 @@ export const gameConfig = {
   height: GAME_HEIGHT,
   parent: 'game-container',
   backgroundColor: '#1a0406',
+  input: {
+    activePointers: 2,
+  },
   physics: {
     default: 'arcade',
     arcade: {

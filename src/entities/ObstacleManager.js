@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import {
-    GAME_WIDTH,
     OBSTACLES,
     OBSTACLE_BODY,
     OBSTACLE_SPAWN,
@@ -42,7 +41,7 @@ export class ObstacleManager {
         const kind = this.pickKind();
         const spec = OBSTACLES[kind];
 
-        const obstacle = this.group.create(GAME_WIDTH + 60, spec.y, spec.key);
+        const obstacle = this.group.create(this.scene.scale.width + 60, spec.y, spec.key);
         obstacle.setData('kind', kind);
         obstacle.setDepth(5);
         obstacle.body.setSize(

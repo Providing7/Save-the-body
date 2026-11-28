@@ -1,5 +1,11 @@
 import Phaser from 'phaser';
-import { GAME_HEIGHT, GAME_WIDTH, TUTORIAL } from '../config/constants.js';
+import { enterFullscreen } from '../systems/MobileLayout.js';
+import { 
+  GAME_HEIGHT, 
+  GAME_WIDTH,
+  MENU,
+  TUTORIAL
+} from '../config/constants.js';
 
 const BODY_X = 80;
 const BODY_WIDTH = GAME_WIDTH - BODY_X * 2;
@@ -34,17 +40,29 @@ export class TutorialScene extends Phaser.Scene {
     this.bindKeys();
     this.renderPage();
 
+    this.updateViewport(this.scale.width, this.scale.height);
+    this.scale.on('resize', this.onResize, this);
+
     this.events.once('shutdown', this.cleanup, this);
   }
 
   createBackground() {
-    this.add.tileSprite(
+    this.background = this.add.tileSprite(
       GAME_WIDTH / 2,
       GAME_HEIGHT / 2,
-      GAME_WIDTH,
-      GAME_HEIGHT,
+      this.scale.width,
+      this.scale.height,
       'background_far',
     );
+  }
+
+  onResize(gameSize) {
+     this.updateViewport(gameSize.width, gameSize.height);
+   }
+ 
+  updateViewport(width, height) {
+    this.cameras.main.centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
+    this.background?.setSize(width, height);
   }
 
   createHeader() {
@@ -88,8 +106,21 @@ export class TutorialScene extends Phaser.Scene {
     );
 
     this.renderSprites(page.sprites);
-    this.renderLines(page.lines);
+    this.renderLines(this.linesFor(page));
+
     this.renderNavigation();
+  }
+
+  linesFor(page) {
+    if (!this.sys.game.device.input.touch) {
+      return page.lines;
+    }
+
+    return page.lines.map((line) =>
+      line.startsWith('Controles:')
+        ? `Controles: ${MENU.CONTROLS_TOUCH}.`
+        : line,
+    );
   }
 
   renderSprites(sprites = []) {
@@ -225,6 +256,11 @@ export class TutorialScene extends Phaser.Scene {
     }
 
     this.leaving = true;
+
+    if (this.sys.game.device.input.touch) {
+      enterFullscreen();
+    }
+
     this.scene.start('GameScene');
   }
 
@@ -266,6 +302,7 @@ export class TutorialScene extends Phaser.Scene {
   }
 
   cleanup() {
+    this.scale.off('resize', this.onResize, this);
     this.input.keyboard.off('keydown-LEFT', this.onPrevKey, this);
     this.input.keyboard.off('keydown-RIGHT', this.onNextKey, this);
     this.input.keyboard.off('keydown-SPACE', this.onNextKey, this);

@@ -1,5 +1,3 @@
-import { GAME_WIDTH } from '../config/constants.js';
-
 const VISIBLE_MS = 1800;
 const FADE_MS = 400;
 
@@ -7,7 +5,7 @@ export class MessageBanner {
     constructor(scene) {
         this.scene = scene;
         this.text = scene.add
-           .text(GAME_WIDTH / 2, 300, '', {
+           .text(scene.scale.width / 2, 300, '', {
             fontFamily: 'monospace',
             fontSize: '14px',
             color: '#fff2cc',
@@ -19,6 +17,10 @@ export class MessageBanner {
            .setOrigin(0.5)
            .setDepth(20)
            .setAlpha(0);
+    }
+
+    resize(width) {
+        this.text.setX(width / 2);
     }
 
     show(message) {

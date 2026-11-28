@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 import {
     DAMAGE,
-    GAME_WIDTH,
     INTEGRITY,
     OXYGEN,
     PHYSIO,
@@ -55,14 +54,19 @@ export class HUD {
         }
 
         this.scoreText = scene.add
-           .text(GAME_WIDTH - 16, 12, '',TEXT_STYLE)
+           .text(scene.scale.width - 16, 12, '',TEXT_STYLE)
            .setOrigin(1, 0)
            .setDepth(10);
 
         this.distanceText = scene.add
-           .text(GAME_WIDTH - 16, 34, '',TEXT_STYLE)
+           .text(scene.scale.width - 16, 34, '',TEXT_STYLE)
            .setOrigin(1, 0)
            .setDepth(10);
+    }
+
+    resize(width) {
+        this.scoreText.setX(width - 16);
+        this.distanceText.setX(width - 16);
     }
 
     update(vitals) {

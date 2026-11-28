@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH, MENU } from '../config/constants.js';
+import { enterFullscreen } from '../systems/MobileLayout.js';
 
 const TEXT_COLOR = '#f2c7c7';
 const HIGHLIGHT_COLOR = '#fff2cc';
@@ -36,18 +37,30 @@ export class MenuScene extends Phaser.Scene {
 
     this.createHints();
     this.bindKeys();
+
+    this.updateViewport(this.scale.width, this.scale.height);
+    this.scale.on('resize', this.onResize, this);
     this.events.once('shutdown', this.cleanup, this);
   }
 
   createBackground() {
-    this.add.tileSprite(
+    this.background = this.add.tileSprite(
       GAME_WIDTH / 2,
       GAME_HEIGHT / 2,
-      GAME_WIDTH,
-      GAME_HEIGHT,
+      this.scale.width,
+      this.scale.height,
       'background_far',
     );
   }
+
+  onResize(gameSize) {
+    this.updateViewport(gameSize.width, gameSize.height);
+  }
+
+  updateViewport(width, height) {
+    this.cameras.main.centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
+    this.background?.setSize(width, height);
+   }
 
   createTitle() {
     const centerX = GAME_WIDTH / 2;
@@ -102,9 +115,12 @@ export class MenuScene extends Phaser.Scene {
 
   createHints() {
     const centerX = GAME_WIDTH / 2;
+    const controls = this.sys.game.device.input.touch
+      ? MENU.CONTROLS_TOUCH
+      : MENU.CONTROLS;
 
     this.add
-      .text(centerX, GAME_HEIGHT - 60, MENU.CONTROLS, {
+      .text(centerX, GAME_HEIGHT - 60, controls, {
         fontFamily: 'monospace',
         fontSize: '13px',
         color: TEXT_COLOR,
@@ -134,6 +150,11 @@ export class MenuScene extends Phaser.Scene {
     }
 
     this.starting = true;
+
+    if(this.sys.game.device.input.touch) {
+      enterFullscreen();
+    }
+    
     this.scene.start('GameScene');
   }
 
@@ -147,8 +168,9 @@ export class MenuScene extends Phaser.Scene {
   }
 
   cleanup() {
-    this.input.keyboard.off('keydown-ENTER', this.startGame, this);
-    this.input.keyboard.off('keydown-SPACE', this.startGame, this);
-    this.input.keyboard.off('keydown-T', this.openTutorial, this);
+   this.scale.off('resize', this.onResize, this);
+   this.input.keyboard.off('keydown-ENTER', this.startGame, this);
+   this.input.keyboard.off('keydown-SPACE', this.startGame, this);
+   this.input.keyboard.off('keydown-T', this.openTutorial, this);
   }
 }
